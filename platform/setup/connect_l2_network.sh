@@ -50,6 +50,8 @@ for ((k = 0; k < GroupNumber; k++)); do
         readarray L2Switches < "${DIRECTORY}/config/$GroupL2SwitchConfig"
         readarray L2Links < "${DIRECTORY}/config/$GroupL2LinkConfig"
         readarray L2Hosts < "${DIRECTORY}/config/$GroupL2HostConfig"
+        #Adds links between west, mid & East routers so that they can forward packets between them to act like linux routers
+        readarray -O "${#L2Hosts[@]}" L2Hosts < "${DIRECTORY}"/config/${GroupL2HostConfig}.extra
 
         L2SwitchNumber=${#L2Switches[@]}
         L2LinkNumber=${#L2Links[@]}

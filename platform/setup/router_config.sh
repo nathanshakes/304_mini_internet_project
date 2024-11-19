@@ -319,8 +319,9 @@ for ((i = 0; i < n_extern_links; i++)); do
         subnet="${row_i[9]}"
 
         if [ "$subnet" != "N/A" ]; then
-            subnet1="${subnet%????}${grp_1}/24"
-            subnet2="${subnet%????}${grp_2}/24"
+        #Change the subnet to /30 for 304
+            subnet1="${subnet%????}${grp_1}/30"
+            subnet2="${subnet%????}${grp_2}/30"
         else
             subnet1="$(subnet_router_router_extern ${grp_1} ${grp_2})"
             subnet2="$(subnet_router_router_extern ${grp_2} ${grp_1})"

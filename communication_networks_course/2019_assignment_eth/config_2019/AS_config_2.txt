@@ -1,2 +1,0 @@
-1   AS      Config  router_config.txt   internal_links_config.txt   l2_switches.txt    l2_hosts.txt   l2_links.txt
-2       AS      Config  router_config.txt    internal_links_config.txt    l2_switches.txt          l2_hosts.txt         l2_links.txt

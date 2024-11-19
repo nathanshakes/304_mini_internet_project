@@ -11,7 +11,7 @@ DOCKERHUB_PREFIX="miniinterneteth/"
 # This URL will be suggested as the default location for students
 # to download their configs. It should be publicly accessible via ssh at port
 # 2000 + X, where X is each AS number.
-SSH_URL="duvel.ethz.ch"
+SSH_URL="home.nshakes.com"
 
 # =============================================================================
 # WEBSERVER
@@ -21,8 +21,8 @@ SSH_URL="duvel.ethz.ch"
 # You need to specify the hostname of the server and an email for
 # LetsEncrypt to be enabled.
 # UPDATE THOSE VARIABLES. WEBSERVER_HOSTNAME -> hostname of the server and EMAIL -> empty string (for http)
-WEBSERVER_HOSTNAME="duvel.ethz.ch"
-WEBSERVER_ACME_MAIL="nsg@ethz.ch"
+WEBSERVER_HOSTNAME="home.nshakes.com"
+WEBSERVER_ACME_MAIL="n.shakes@outlook.com"
 # Hostname and ports for the webserver and krill on the host.
 # (must be publicly available)
 # you can change http and https ports, but letsencrypt won't work, so its not recommended.
@@ -31,7 +31,7 @@ WEBSERVER_PORT_HTTPS="443"
 # Use the one you want, make sure to make it reachable from outside.
 WEBSERVER_PORT_KRILL="3000"
 # Put your timezone here.
-WEBSERVER_TZ="Europe/Zurich"
+WEBSERVER_TZ="Pacific/Auckland"
 
 # =============================================================================
 # Connections

@@ -1,2 +1,0 @@
-CENT1 N\A host:thomahol/d_host  vtysh
-CENT2 N\A host:thomahol/d_host  vtysh

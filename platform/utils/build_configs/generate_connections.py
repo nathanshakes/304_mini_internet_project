@@ -76,7 +76,7 @@ BUFFER_ADVERTISES_ALL_VIA_IXP = True
 # ---------------------
 
 AREAS = 2
-CONFIGURABLE_PER_AREA = 2  # Number of ASes that can be configured by students.
+CONFIGURABLE_PER_AREA = 4  # Number of ASes that can be configured by students.
 FIRST_IXP = 80
 
 # Define the connections and roles of the ASes in each topology.
@@ -99,13 +99,14 @@ transit_as_topo = {
     # connection of AS to X: (AS city, AS role)
     # Example: The connection to the first provider is at Basel, and the AS
     # takes the role of a customer.
-    'provider1': ('MUNI', customer),
-    'provider2': ('BASE', customer),
-    'customer1': ('LYON', provider),
-    'customer2': ('MILA', provider),
+    'provider1': ('BOST', customer),
+    'provider2': ('LOND', customer),
+    'customer1': ('ZURI', provider),
+    'customer1': ('TRGA', provider),
+    'customer2': ('ATLA', provider),
     # Peer and IXP.
-    'peer': ('LUGA', peer),
-    'ixp': ('VIEN', peer),
+    'peer': ('PARI', peer),
+    'ixp': ('NEWY', peer),
 }
 
 # All non-transit ASes only have a single router ZURI.
@@ -147,7 +148,7 @@ ixp_topo = {
 
 def get_link(role1, role2):
     """Here, you can define the link properties between neighbors."""
-    #return default_link
+    return default_link
     # Alternative:
     # In this version, we slow down the link to the provider in the other
     # column, e.g. between 1 and 3, and between 2 and 4; but not the links in
@@ -256,9 +257,9 @@ def get_subnet_and_ips(asn1, asn2):
 
     _middle_octets = f"{min(asn1, asn2)}.{max(asn1, asn2)}"
     return (
-        f"179.{_middle_octets}.0/24",
-        f"179.{_middle_octets}.{asn1}/24",
-        f"179.{_middle_octets}.{asn2}/24",
+        f"179.{_middle_octets}.0/30",
+        f"179.{_middle_octets}.{asn1}/30",
+        f"179.{_middle_octets}.{asn2}/30",
     )
 
 

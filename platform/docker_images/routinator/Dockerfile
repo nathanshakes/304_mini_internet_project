@@ -4,7 +4,16 @@ FROM d_base:latest as build
 # Specify what version of routinator should be built.
 ARG ROUTINATOR_VERSION=0.10.2
 
-RUN apk add wget openssl-dev rust cargo
+# Install necessary dependencies
+RUN apk add --no-cache \
+    wget \
+    openssl-dev \
+    build-base \
+    rust \
+    cargo \
+    musl-dev \
+    libffi-dev \
+    ca-certificates
 
 WORKDIR /tmp/routinator
 
