@@ -52,7 +52,7 @@ if [[ "$MeasureRequired" == "True" ]]; then
         -v \
         "${DIRECTORY}"/config/measurement_welcome_message.txt:/etc/motd:rw \
         --cap-add=NET_ADMIN \
-        --network="bridge" -p 2099:22 \
+        --network="bridge" -p 52099:22 \
         "${DOCKERHUB_PREFIX}d_measurement" > /dev/null
 
     # connect to ssh network and rename interface to ssh in the ssh container

@@ -1,7 +1,8 @@
 +------------------------------------------------------+
 |                                                      |
-|   Communication Networks 2024  - Routing Project     |
-|             Public Measurement Service               |
+|		     COMPX304-25A   		       |
+|	Advanced Networking and Cyber Security         |
+|             Build your mini-Internet!                |
 |                                                      |
 |   From here, you can launch traceroutes via any      |
 |   group AS in the Mini-Internet. Each group is       |

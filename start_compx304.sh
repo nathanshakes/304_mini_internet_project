@@ -213,6 +213,33 @@ if ! command -v openvpn &>/dev/null; then
   fi
 fi
 
+# Check if screen is installed
+if ! command -v screen &>/dev/null; then
+  echo "Screen is not installed, this is used to make hourly backups"
+  read -r -p "Would you like to automatically install screen? [y/N]" -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    sudo apt install -y screen
+  else
+    exit 1
+  fi
+fi
+
+# Check if BBR is listed among available congestion control algorithms, part of lab 5
+if ! sysctl net.ipv4.tcp_available_congestion_control | grep -q bbr; then
+  echo "BBR is not listed as an available congestion control algorithm."
+  read -r -p "Would you like to enable BBR? [y/N] " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Try to load the BBR module
+    if sudo modprobe tcp_bbr; then
+      echo "BBR module successfully loaded."
+    else
+      echo "Failed to load the BBR module. Please ensure your kernel supports BBR."
+    fi
+  fi
+fi
+
 # Get the current kernel version
 KERNEL_VERSION=$(uname -r)
 
@@ -258,6 +285,10 @@ type_to_screen() {
 
 cd ./platform
 
+# Cleanup up screens
+echo "Cleaning up any old running screen used for backups"
+screen -XS backups quit || true
+
 estimate_requirements
 echo "A large class-sized mini-Internet can take in the order of hours to start"
 read -r -p "Would you like to continue with the configuration above and start the mini-Internet? [y/N]"
@@ -273,6 +304,25 @@ fi
 # Start mini-internet
 ./startup.sh
 
+#Start a detached terminal to run the backups script
+screen -S backups -d -m
+
+#run the backups script
+type_to_screen backups "./utils/save_and_restore/save_304.sh\n"
+
+#Removes link speed control from west hosts for lab 5
+for host in west-1 west-2; do
+  # Get the container names for the current host
+  container_names=$(docker ps --filter "name=$host" --format "{{.Names}}")
+  
+  for container in $container_names; do
+    # Extract the first number before the underscore
+    first_number=$(echo "$container" | cut -d'_' -f1)
+    # Execute the docker command and ignore the error if it fails
+    docker exec -i "$container" tc qdisc del dev "${first_number}-WEST" root || true
+  done
+done
+
 echo_green "The mini-Internet project is now running"
 echo
 
@@ -282,5 +332,5 @@ echo " - Copy external_links_config_students.txt to as_connections.txt on the we
 echo " - Check the webserver is configured correctly with HTTPS and access rules"
 echo " - Verify the website is working and that the matrix is green for configured ASes"
 echo " - Verify ssh is working for the groups and measurement container"
-echo " - Implement offsite backups of the backup directory $(realpath ../backups)"
+echo " - Implement offsite backups of the backup directory $(realpath ../students_configs)"
 echo " - Run through labs and assignments to check they work correctly"
