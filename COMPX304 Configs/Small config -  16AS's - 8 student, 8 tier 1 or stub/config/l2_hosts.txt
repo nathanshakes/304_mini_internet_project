@@ -1,0 +1,9 @@
+east-1	d_host	UNIV	EAST	10mbit   1ms    50ms    10
+east-2	d_host	UNIV	EAST	10mbit   1ms    50ms    10
+east-router	d_host	UNIV	EAST	10mbit   1ms    50ms    10
+mid-1	d_host	UNIV	MID	10mbit   1ms    50ms    10
+mid-2	d_host	UNIV	MID	10mbit   1ms    50ms    10
+west-1	d_host	UNIV	WEST	10mbit   1ms    50ms    10
+west-2	d_host	UNIV	WEST	10mbit   1ms    50ms    10
+west-router	d_host	UNIV	WEST	10mbit   1ms    50ms    10
+upstream        d_host     UNIV    NORTH	10mbit   1ms    50ms    10
