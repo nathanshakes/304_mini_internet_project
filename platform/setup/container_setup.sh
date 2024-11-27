@@ -83,7 +83,7 @@ for ((k = 0; k < group_numbers; k++)); do
                 -v "${DIRECTORY}"/config/course_scripts/:/scripts/:ro \
                 --log-opt max-size=1m --log-opt max-file=3 \
                 --network="bridge" -p "$((group_number + 52000)):22" \
-                "${DOCKERHUB_PREFIX}d_ssh" > /dev/null # suppress container id output
+                "d_ssh" > /dev/null # suppress container id output
 
             # connect to the ssh container network and rename interface
             docker network connect --ip="${subnet_ssh_to_grp%/*}" "$ssh_to_grp_bname" "${group_number}_ssh"

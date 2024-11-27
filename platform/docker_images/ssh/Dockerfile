@@ -10,9 +10,13 @@ RUN apk add --no-cache openssh-client openssh-server zip ncurses \
     && ssh-keygen -A \
     && mkdir -p /var/run/sshd /root/.ssh \
     && chmod 0755 /var/run/sshd
+    
+RUN apk add --no-cache tzdata \
+    && cp /usr/share/zoneinfo/Pacific/Auckland /etc/localtime \
+    && echo "Pacific/Auckland" > /etc/timezone
 
 # Add config files
-COPY sshd_config /etc/ssh/sshd_config
+COPY sshd_config /etc/ssh/sshd_configs
 COPY ssh_config /etc/ssh/ssh_config
 
 COPY goto_completion /root/.goto_completion
