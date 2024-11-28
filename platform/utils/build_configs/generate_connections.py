@@ -236,9 +236,14 @@ def get_subnet_and_ips(asn1, asn2):
 
     If both ASes are not IXPs:
 
-        Subnet:  179.<smaller asn>.<larger asn>.0/24
-        IP ASN1: 179.<smaller asn>.<larger asn>.<asn1>/24
-        IP ASN2: 179.<smaller asn>.<larger asn>.<asn2>/24
+        Subnet:  179.<smaller asn>.<larger asn>.0/30
+        IPs:
+            - If asn1 < asn2:
+                179.<smaller asn>.<larger asn>.1/30 (asn1)
+                179.<smaller asn>.<larger asn>.2/30 (asn2)
+            - Otherwise:
+                179.<smaller asn>.<larger asn>.2/30 (asn1)
+                179.<smaller asn>.<larger asn>.1/30 (asn2)
 
     If AS 2 is an IXP:
 
@@ -255,11 +260,20 @@ def get_subnet_and_ips(asn1, asn2):
         )
 
     _middle_octets = f"{min(asn1, asn2)}.{max(asn1, asn2)}"
-    return (
-        f"179.{_middle_octets}.0/30",
-        f"179.{_middle_octets}.{asn1}/30",
-        f"179.{_middle_octets}.{asn2}/30",
-    )
+    
+    if asn1 < asn2:
+        return (
+            f"179.{_middle_octets}.0/30",
+            f"179.{_middle_octets}.1/30",
+            f"179.{_middle_octets}.2/30",
+        )
+    else:
+        return (
+            f"179.{_middle_octets}.0/30",
+            f"179.{_middle_octets}.2/30",
+            f"179.{_middle_octets}.1/30",
+        )
+
 
 
 def get_topo(asn):
