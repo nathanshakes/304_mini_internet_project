@@ -320,8 +320,14 @@ for ((i = 0; i < n_extern_links; i++)); do
 
         if [ "$subnet" != "N/A" ]; then
         #Change the subnet to /30 for 304
-            subnet1="${subnet%????}${grp_1}/30"
-            subnet2="${subnet%????}${grp_2}/30"
+            if [ "$grp_1" -lt "$grp_2" ]; then
+    		subnet1="${subnet%????}1/30"
+    		subnet2="${subnet%????}2/30"
+	    else
+    		subnet1="${subnet%????}2/30"
+    		subnet2="${subnet%????}1/30"
+            fi
+
         else
             subnet1="$(subnet_router_router_extern ${grp_1} ${grp_2})"
             subnet2="$(subnet_router_router_extern ${grp_2} ${grp_1})"

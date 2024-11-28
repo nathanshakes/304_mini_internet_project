@@ -3,12 +3,12 @@
 
 ### TO UPDATE ###
 # this variable is the absolute path to the platform directory.
-PLATFORM_DIR=/home/nathshakes/Documents/mini_internet_project-master/platform
+PLATFORM_DIR=/home/nshakes/304_mini_internet_project/platform
 # this variable includes all the AS number that need to be configured.
-ASN_TO_CONFIGURE="4"
+ASN_TO_CONFIGURE="3 4"
 # this variable contains all the router names that need to be configured.
 # The order is important, as it will be used to assign IP addresses to the routers.
-ROUTER_NAMES="ZURI BASE GENE LUGA MUNI LYON VIEN MILA"
+ROUTER_NAMES="LOND HAML PARI TRGA NEWY BOST ATLA ZURI"
 CONFIG_FILES="conf_init.sh conf_full.sh conf_rpki.sh"
 
 echo "Updating configs."
