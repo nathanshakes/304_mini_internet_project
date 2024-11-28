@@ -65,7 +65,7 @@ AUTOCONF_EVERYTHING = False
 
 # If true, links between student ASes are only assigned a subnet in the
 # aslevel_links_students.txt file. If False, they are assigned an IP address.
-SUBNETS_ONLY_FOR_STUDENTS = True
+SUBNETS_ONLY_FOR_STUDENTS = False
 
 # If true, the buffer (or stub, if no hijacks) ASes advertise their prefix to
 # the same region via the IXP, so the students can better debug denying those
@@ -77,7 +77,7 @@ BUFFER_ADVERTISES_ALL_VIA_IXP = True
 
 AREAS = 2
 CONFIGURABLE_PER_AREA = 4  # Number of ASes that can be configured by students.
-FIRST_IXP = 80
+FIRST_IXP = 120
 
 # Define the connections and roles of the ASes in each topology.
 # --------------------------------------------------------------
@@ -89,8 +89,8 @@ do_not_hijack = [
     1,
 ]  # AS 1 hosts krill, so we need it reachable.
 
-default_link = ("1mbit", "2.5ms", "50ms")  # throughput, delay, buffer,
-delay_link = ("1mbit", "25ms ", "50ms")  # as above; not used by default
+default_link = ("100mbit", "2.5ms", "1ms")  # throughput, delay, buffer,
+delay_link = ("100mbit", "25ms ", "1ms")  # as above; not used by default
 customer = "Customer"
 provider = "Provider"
 peer = "Peer    "  # Spaces to align with the other roles in config file.
@@ -100,9 +100,8 @@ transit_as_topo = {
     # Example: The connection to the first provider is at Basel, and the AS
     # takes the role of a customer.
     'provider1': ('BOST', customer),
-    'provider2': ('LOND', customer),
+    'provider2': ('HAML', customer),
     'customer1': ('ZURI', provider),
-    'customer1': ('TRGA', provider),
     'customer2': ('ATLA', provider),
     # Peer and IXP.
     'peer': ('PARI', peer),
@@ -179,7 +178,7 @@ ASES_PER_AREA = CONFIGURABLE_PER_AREA + 4  # 2 stub, 2 provider
 if ENABLE_STUB_HIJACKS:
     ASES_PER_AREA += 2  # add 2 ASes as buffer between students and hijackers.
 # Leave enough space if we have to skip some ASes.
-_area_max = 10 * math.ceil((ASES_PER_AREA + 1 + len(skip_groups)) / 10)
+_area_max =  10 * math.ceil((ASES_PER_AREA + 1 + len(skip_groups)) / 10)
 
 
 def _area_ases(start):

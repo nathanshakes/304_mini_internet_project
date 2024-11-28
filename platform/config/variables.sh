@@ -11,7 +11,7 @@ DOCKERHUB_PREFIX="miniinterneteth/"
 # This URL will be suggested as the default location for students
 # to download their configs. It should be publicly accessible via ssh at port
 # 2000 + X, where X is each AS number.
-SSH_URL="home.nshakes.com"
+SSH_URL="mini.cms.waikato.ac.nz"
 
 # =============================================================================
 # WEBSERVER
@@ -21,13 +21,13 @@ SSH_URL="home.nshakes.com"
 # You need to specify the hostname of the server and an email for
 # LetsEncrypt to be enabled.
 # UPDATE THOSE VARIABLES. WEBSERVER_HOSTNAME -> hostname of the server and EMAIL -> empty string (for http)
-WEBSERVER_HOSTNAME="home.nshakes.com"
-WEBSERVER_ACME_MAIL="n.shakes@outlook.com"
+WEBSERVER_HOSTNAME="mini.cms.waikato.ac.nz"
+WEBSERVER_ACME_MAIL="nathan.shakes@waikato.ac.nz"
 # Hostname and ports for the webserver and krill on the host.
 # (must be publicly available)
 # you can change http and https ports, but letsencrypt won't work, so its not recommended.
-WEBSERVER_PORT_HTTP="80"
-WEBSERVER_PORT_HTTPS="443"
+WEBSERVER_PORT_HTTP="52998"
+WEBSERVER_PORT_HTTPS="52999"
 # Use the one you want, make sure to make it reachable from outside.
 WEBSERVER_PORT_KRILL="3000"
 # Put your timezone here.

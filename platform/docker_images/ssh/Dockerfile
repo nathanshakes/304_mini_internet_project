@@ -16,7 +16,7 @@ RUN apk add --no-cache tzdata \
     && echo "Pacific/Auckland" > /etc/timezone
 
 # Add config files
-COPY sshd_config /etc/ssh/sshd_configs
+COPY sshd_config /etc/ssh/sshd_config
 COPY ssh_config /etc/ssh/ssh_config
 
 COPY goto_completion /root/.goto_completion
