@@ -22,7 +22,7 @@ docker_name=miniinterneteth
 #    fi
 #done
 
-images=(base base_supervisor host router measurement ssh)
+images=(base base_supervisor host router measurement ssh switch attack_host)
 
 for image in "${images[@]}"; do
     echo "Building $image..."

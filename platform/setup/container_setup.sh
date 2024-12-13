@@ -128,7 +128,7 @@ for ((k = 0; k < group_numbers; k++)); do
                     -v /etc/localtime:/etc/localtime:ro \
                     --log-opt max-size=1m --log-opt max-file=3 \
                     --network="${ssh_to_ctn_bname}" --ip="${subnet_ssh_switch%/*}" \
-                    "${DOCKERHUB_PREFIX}d_switch" > /dev/null
+                    "d_switch" > /dev/null
                 # echo ${group_number}_L2_${l2name}_${sname}
 
                 # rename eth0 interface to ssh in the switch container
@@ -288,6 +288,7 @@ for ((k = 0; k < group_numbers; k++)); do
                         --sysctl net.ipv4.icmp_echo_ignore_broadcasts=0 \
                         --sysctl net.ipv6.conf.all.disable_ipv6=0 \
                         --sysctl net.ipv6.icmp.ratelimit=0 \
+                        -v "${DIRECTORY}"/config/course_scripts/:/scripts/:ro \
                         -v /etc/timezone:/etc/timezone:ro \
                         -v /etc/localtime:/etc/localtime:ro \
                         --log-opt max-size=1m --log-opt max-file=3 \

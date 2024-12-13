@@ -57,7 +57,7 @@ for ((k = 0; k < GroupNumber; k++)); do
         L2LinkNumber=${#L2Links[@]}
         L2HostNumber=${#L2Hosts[@]}
 
-        # add bridges to the L2 switches
+        # add bridges to the  switches
         for ((i = 0; i < L2SwitchNumber; i++)); do
             L2SwitchI=(${L2Switches[$i]}) # L2 switch row
             DCName="${L2SwitchI[0]}"      # DC name
@@ -67,12 +67,8 @@ for ((k = 0; k < GroupNumber; k++)); do
 
             SwCtnName="${GroupAS}_L2_${DCName}_${SWName}"
 
-            docker exec -d "${SwCtnName}" ovs-vsctl \
-                -- add-br br0 \
-                -- set bridge br0 stp_enable=true \
-                -- set-fail-mode br0 standalone \
-                -- set bridge br0 other_config:stp-system-id=${MacAddress} \
-                -- set bridge br0 other_config:stp-priority=${StpPriority}
+            docker exec -d "${SwCtnName}" ip link add br0 type bridge
+            docker exec -d "${SwCtnName}" ip link set br0 up
 
         done
 

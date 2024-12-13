@@ -79,7 +79,7 @@
 79	AS	NoConfig	l3_routers.txt	l3_links.txt	l2_switches.txt	l2_hosts.txt	l2_links.txt
 80	AS	NoConfig	l3_routers.txt	l3_links.txt	l2_switches.txt	l2_hosts.txt	l2_links.txt
 81	AS	NoConfig	l3_routers.txt	l3_links.txt	l2_switches.txt	l2_hosts.txt	l2_links.txt
-82	AS	NoConfig	l3_routers.txt	l3_links.txt	l2_switches.txt	l2_hosts.txt	l2_links.txt
+82	AS	Config	l3_routers_attack.txt	l3_links.txt	l2_switches.txt	l2_hosts.txt	l2_links.txt
 83	AS	Config  	l3_routers_tier1_and_stub.txt	l3_links_tier1_and_stub.txt	empty.txt	empty.txt	empty.txt
 84	AS	Config  	l3_routers_tier1_and_stub.txt	l3_links_tier1_and_stub.txt	empty.txt	empty.txt	empty.txt
 120	IXP	Config  	N/A	N/A	N/A	N/A	N/A

@@ -2,9 +2,9 @@
 FROM d_base:latest as build
 
 # Specify what version of routinator should be built.
-ARG ROUTINATOR_VERSION=0.10.2
+ARG ROUTINATOR_VERSION=0.13.2
 
-# Install necessary dependencies
+# Install necessary dependencies, including rustup
 RUN apk add --no-cache \
     wget \
     openssl-dev \
@@ -13,11 +13,17 @@ RUN apk add --no-cache \
     cargo \
     musl-dev \
     libffi-dev \
-    ca-certificates
+    ca-certificates \
+    zlib-dev 
 
+
+# Set working directory
 WORKDIR /tmp/routinator
 
+# Download and extract the Routinator source code
 RUN wget "https://github.com/NLnetLabs/routinator/archive/refs/tags/v${ROUTINATOR_VERSION}.tar.gz" -O - | tar -xz --strip-components=1
+
+
 RUN cargo build \
     --target x86_64-alpine-linux-musl \
     --features socks,native-tls \
@@ -33,7 +39,32 @@ COPY --from=build /tmp/routinator/target/x86_64-alpine-linux-musl/release/routin
 # foreground without the Docker argument "--init" (which is actually another
 # way of activating Tini, but cannot be enabled from inside the Docker image).
 RUN apk add --no-cache curl rsync libgcc ca-certificates openssl openssh-server \
-    && ssh-keygen -A \
+	openssh-server \
+        iptables \
+        gcompat \
+        iproute2 \
+        netcat-openbsd \
+        python3 \
+        py3-pip \
+        py3-cryptography \
+        build-base \
+        libffi-dev \
+        py3-cffi \
+        libpcap-dev
+        
+# Install tools from testing repository
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        hping3 \
+        masscan \
+        zmap
+        
+# Create a Python virtual environment and install Scapy
+RUN python3 -m venv /opt/venv \
+    && . /opt/venv/bin/activate \
+    && pip install --no-cache-dir scapy \
+    && deactivate
+
+RUN ssh-keygen -A \
     && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config \
     && sed -i 's/#PrintMotd yes/PrintMotd no/g' /etc/ssh/sshd_config \
     # Unlocks the root user so that ssh login is allowed.

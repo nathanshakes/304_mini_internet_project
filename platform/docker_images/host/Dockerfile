@@ -1,19 +1,14 @@
-# Use d_base Alpine image
+# Use the Alpine base image
 FROM d_base:latest
 
-# Install dependencies
+# Install system dependencies
 RUN apk add --no-cache \
         openssh-server \
         iptables \
         gcompat \
         iproute2 \
         netcat-openbsd 
-
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-        hping3 \
-        masscan \
-        zmap
-
+        
 # Configure SSH
 RUN ssh-keygen -A \
     && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config \
@@ -25,5 +20,6 @@ RUN ssh-keygen -A \
 # Expose SSH port
 EXPOSE 22
 
+# Default command
 CMD ["/usr/sbin/sshd", "-D", "-e"]
 

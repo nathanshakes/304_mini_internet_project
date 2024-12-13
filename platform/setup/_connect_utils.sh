@@ -857,7 +857,7 @@ connect_one_l2_host() {
 
         # configure port on the switch container
         # if the link is reconnected, the port is still there, so add a duplicate port will not take effect
-        docker exec -d "${SwitchCtnName}" ovs-vsctl add-port br0 "${SwitchInterface}"
+        docker exec -d "${SwitchCtnName}" ip link set "${SwitchInterface}" master br0
 
 
         # return the host and switch interface names and pids
