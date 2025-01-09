@@ -1,0 +1,14 @@
+Cleaning up any old running screen used for backups
+The mini-Internet is configured to create:
+ 84 ASes
+   Light:24 Full:60 +IXPs:7
+ 1906 docker containers
+    Hosts:1056 Routers:576 Switches:180 IXPs:7 SSH hosts:84 Other:3
+
+Number of CPU cores recommended: 16   found: [32m20
+(B[mRunning the mini-Internet platform alone is expected to use 67GB of RAM
+You should allow at least 112GB of RAM for a long-running teaching deployment
+Memory min: 67GB  recommended: 112GB   found: [31m31GB
+(B[m[31mWARNING: You most likely don't have enough RAM to start this configuration
+(B[mWould you like to continue anyway? [y/N]
+Exiting

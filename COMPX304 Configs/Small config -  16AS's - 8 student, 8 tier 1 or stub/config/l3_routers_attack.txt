@@ -5,4 +5,4 @@ TRGA   N/A          	L2-UNIV:d_attack_host		vtysh
 NEWY   N/A           	host:d_attack_host		vtysh
 BOST   N/A        	host:d_attack_host             vtysh
 ATLA   MATRIX_TARGET 	host:d_attack_host             vtysh
-ZURI   N/A   		routinator:d_routinator             vtysh
+ZURI   N/A   		routinator:miniinterneteth/d_routinator             vtysh
