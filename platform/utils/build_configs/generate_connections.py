@@ -178,7 +178,7 @@ ASES_PER_AREA = CONFIGURABLE_PER_AREA + 4  # 2 stub, 2 provider
 if ENABLE_STUB_HIJACKS:
     ASES_PER_AREA += 2  # add 2 ASes as buffer between students and hijackers.
 # Leave enough space if we have to skip some ASes.
-_area_max =  10 * math.ceil((ASES_PER_AREA + 1 + len(skip_groups)) / 10)
+_area_max =  ASES_PER_AREA
 
 
 def _area_ases(start):
