@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ip route save scope global > /tmp/global_routes
+ip route flush scope global
+ip route restore < /tmp/global_routes
+rm /tmp/global_routes
+

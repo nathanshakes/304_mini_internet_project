@@ -184,7 +184,7 @@ for ((k=0;k<n_groups;k++)); do
         echo "echo 'Saving complete!'"
         echo "echo ''"
         echo "echo \"Download the archive file (run these commands from linux-labs):\""
-        echo "echo \"    scp -O -P $((52000 + ${group_number})) root@${SSH_URL}:\${dirname}.tar.gz .\""
+        echo "echo \"    scp -P $((52000 + ${group_number})) root@${SSH_URL}:\${dirname}.tar.gz .\""
         echo "echo ''"
         echo "echo 'Contact the lab demos if you are unable to download your files!'"
     } >> $file_loc

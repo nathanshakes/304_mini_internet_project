@@ -1,0 +1,19 @@
++------------------------------------------------------+
+|                                                      |
+|		     COMPX304-25A   		       |
+|	Advanced Networking and Cyber Security         |
+|             Build your mini-Internet!                |
+|                                                      |
+|   From here, you can access your virtual devices     |
+|   with the goto.sh script. For instance:             |
+|                                                      |
+|       ./goto.sh trga router                          |
+|       ./goto.sh haml host                            |
+|       ./goto.sh univ west-1                          |
+|       ./goto.sh univ east-router                     |
+|                                                      |
+|   For any issues please contact: @waikato.ac.nz      |
+|                                                      |
+|       		                               |
+|                                                      |
++------------------------------------------------------+

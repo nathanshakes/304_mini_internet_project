@@ -1,8 +1,8 @@
 #!/bin/bash
 
 WORKDIR="$(pwd)/"
-routers=('ZURI' 'BASE' 'GENE' 'LUGA' 'MUNI' 'LYON' 'VIEN' 'MILA')
-dchosts=('FIFA' 'UEFA')
+routers=('LOND' 'HAML' 'PARI' 'TRGA' 'NEWY' 'BOST' 'ATLA' 'ZURI')
+dchosts=('east-1' 'east-2' 'east-router' 'mid-1' 'mid-2' 'west-1' 'west-2' 'west-router')
 
 # Variables for this script
 isDoBackup=false
@@ -12,11 +12,11 @@ isDoRestore=false
 # save all configs first
 save_configs() {
   cd $WORKDIR../
-  if ! [[ -d students_config ]]; then
-    mkdir students_config
+  if ! [[ -d restore ]]; then
+    mkdir restore
   fi
 
-  cd students_config/
+  cd restore/
   rm -rf *
 
   for as in ${students_as[@]}; do
@@ -53,7 +53,7 @@ reset_with_startup() {
 
 restore_configs() {
   for as in ${students_as[@]}; do
-    cd $WORKDIR../students_config/
+    cd $WORKDIR../restore/
 
     echo "Restoring config on AS: ${as}"
     docker cp ./configs-as-${as}.tar.gz ${as}_ssh:/root/configs-as-${as}.tar.gz
@@ -63,13 +63,13 @@ Y
 EOF
 
     # Extract the config file
-    cd $WORKDIR../students_config/; rm -rf configs_*; tar -xf configs-as-${as}.tar.gz
+    cd $WORKDIR../restore/; rm -rf configs_*; tar -xf configs-as-${as}.tar.gz
     # Get configs folder name
     configs_folder_name=$(ls -d */ | grep configs)
 
     # Restore router files
     for rc in ${routers[@]}; do
-      cd $WORKDIR../students_config/
+      cd $WORKDIR../restore/
 
       container_name=${as}_${rc}router
 
@@ -87,7 +87,7 @@ EOF
     
     # Restore router hosts
     for rc in ${routers[@]}; do
-      cd $WORKDIR../students_config/
+      cd $WORKDIR../restore/
 
       container_name=${as}_${rc}host
 
@@ -108,62 +108,49 @@ EOF
       docker exec -itw /root ${container_name} ip route add default via ${default_route} &> /dev/null
     done
     
-    # Restore switch files into switch
-    for sw in $(seq 1 4); do
-      cd $WORKDIR../students_config/
-
-      # Init switch loc
-      switch_name=S${sw}
-      data_center_loc='DCN'
-      if [[ $switch_name == 'S4' ]]; then
-        data_center_loc='DCS'
-      fi
-
-      container_name=${as}_L2_${data_center_loc}_${switch_name}
-
-      # Get configs folder name
-      configs_folder_name=$(ls -d */ | grep configs)
-
-      # Overwrite backuped switch file to the /etc/openvswitch/conf.db
-      echo "Restoring $container_name configuration..."
-      docker cp ${configs_folder_name}${switch_name}/switch.db ${container_name}:/root/switch.db
-      docker exec -itw /root ${container_name} bash -c 'ovsdb-client restore < /root/switch.db'
-      sleep 2
-      docker exec -itw /root ${container_name} bash -c 'rm /root/switch.db'
-    done
 
     # Restore Datacenter Hosts
-    for dc in ${dchosts[@]}; do
-      for i in $(seq 1 4); do
-        cd $WORKDIR../students_config/
+for dc in ${dchosts[@]}; do
+        cd $WORKDIR../restore/
 
         # Init host loc
-        data_center_loc='DCN'
-        if [[ $i -eq 4 ]]; then
-          data_center_loc='DCS'
-        fi
+        data_center_loc='UNIV'
 
-        hostname=${dc}_${i}
+        hostname=${dc}
         container_name=${as}_L2_${data_center_loc}_${hostname}
 
-        echo "Restoring $container_name configuration..."
-        # Get the IPv4 address
-        ipv4=$(cat ${configs_folder_name}${hostname}/host.ip | grep -w inet | grep ${as}-S${i} | awk '{print $2}')
-        echo "Backuped $container_name IPv4: ${ipv4}"
-        # Get the IPv6 address
-        ipv6=$(cat ${configs_folder_name}${hostname}/host.ip | grep -w inet6 | grep ${as}-S${i} | awk '{print $2}')
-        echo "Backuped $container_name IPv6: ${ipv6}"
-        # Get default route (IPv4 only?)
-        default_route=$(cat ${configs_folder_name}${hostname}/host.route | grep -w default | awk '{print $3}')
-        echo "Backuped $container_name Default Route: ${default_route}"
+            echo "Restoring $container_name configuration..."
 
-        # Adding the IPv4 and IPv6 address
-        docker exec -itw /root ${container_name} ip address add ${ipv4} dev ${as}-S${i} &> /dev/null
-        docker exec -itw /root ${container_name} ip address add ${ipv6} dev ${as}-S${i} &> /dev/null
-        docker exec -itw /root ${container_name} ip route add default via ${default_route} &> /dev/null
-      done
+    # Extract interfaces: remove @suffix, exclude "ssh", and only keep those starting with "${as}-"
+    interfaces=$(awk -F: '/^[0-9]+: / {print $2}' ${configs_folder_name}${hostname}/host.ip | awk '{$1=$1};1' | cut -d'@' -f1 | grep -v '^ssh$' | grep "^${as}-")
+
+    echo "Detected interfaces for $hostname: $interfaces"
+
+    for interface in $interfaces; do
+        # Get the IPv4 address for this interface
+        ipv4=$(grep -A3 "$interface" ${configs_folder_name}${hostname}/host.ip | grep -w inet | awk '{print $2}')
+        if [[ -n "$ipv4" ]]; then
+            echo "Backuped $container_name IPv4 on $interface: ${ipv4}"
+            docker exec -itw /root ${container_name} ip address add ${ipv4} dev ${interface} &> /dev/null
+        fi
+
+        # Get the IPv6 address for this interface
+        ipv6=$(grep -A3 "$interface" ${configs_folder_name}${hostname}/host.ip | grep -w inet6 | awk '{print $2}')
+        if [[ -n "$ipv6" ]]; then
+            echo "Backuped $container_name IPv6 on $interface: ${ipv6}"
+            docker exec -itw /root ${container_name} ip address add ${ipv6} dev ${interface} &> /dev/null
+        fi
     done
+
+    # Get default route (IPv4 only?)
+    default_route=$(cat ${configs_folder_name}${hostname}/host.route | grep -w default | awk '{print $3}')
+    if [[ -n "$default_route" ]]; then
+        echo "Backuped $container_name Default Route: ${default_route}"
+        docker exec -itw /root ${container_name} ip route add default via ${default_route} &> /dev/null
+    fi
+      done
   done
+
 }
 
 show_passwords() {
@@ -189,7 +176,7 @@ function red_echo() {
 show_help() {
   echo "usage: $0 [options] [-g <AS groups>]"
   echo "options available:"
-  echo -ne "\t-b\tbackup configs to students_config directory (-g is required)\n\t\t"
+  echo -ne "\t-b\tbackup configs to restore directory (-g is required)\n\t\t"
   red_echo '(CAUTION: this will wipes all existing configs in the directory, ensure you had copy the configs beforehand)'
   echo -ne "\t-s\treset the mini internet, performs startup.sh\n\t\t"
   red_echo '(CAUTION: this will wipes all configs in the project, ensure you had the backup of the configs)'

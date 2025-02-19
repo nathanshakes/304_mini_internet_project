@@ -75,8 +75,8 @@ BUFFER_ADVERTISES_ALL_VIA_IXP = True
 # Size of the topology.
 # ---------------------
 
-AREAS = 2
-CONFIGURABLE_PER_AREA = 4  # Number of ASes that can be configured by students.
+AREAS = 6
+CONFIGURABLE_PER_AREA = 12  # Number of ASes that can be configured by students.
 FIRST_IXP = 120
 
 # Define the connections and roles of the ASes in each topology.
@@ -178,7 +178,7 @@ ASES_PER_AREA = CONFIGURABLE_PER_AREA + 4  # 2 stub, 2 provider
 if ENABLE_STUB_HIJACKS:
     ASES_PER_AREA += 2  # add 2 ASes as buffer between students and hijackers.
 # Leave enough space if we have to skip some ASes.
-_area_max =  10 * math.ceil((ASES_PER_AREA + 1 + len(skip_groups)) / 10)
+_area_max =  ASES_PER_AREA
 
 
 def _area_ases(start):
