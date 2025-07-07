@@ -72,7 +72,7 @@ HISTORY_ENABLED=true
 # Whether to pause the matrix container after starting it.
 # Can reduce disk usage when the mini internet is not used immediately.
 # Unpause container at any time with `docker container unpause HISTORY`
-HISTORY_PAUSE_AFTER_START=false
+HISTORY_PAUSE_AFTER_START=true
 # How often to fetch update configs and matrix state.
 HISTORY_UPDATE_FREQUENCY=$(( 60*60 ))  # every hour (in seconds)
 # Timeout for ./save_configs.sh
